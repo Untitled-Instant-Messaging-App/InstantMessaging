@@ -1,14 +1,12 @@
 import "./App.css";
 import { useRef } from "react";
-import { channels } from "../shared/constants";
-import { ipcRenderer } from "electron";
 
 function App() {
-  const password = useRef();
-  const username = useRef();
+  const password = useRef(null);
+  const username = useRef(null);
 
   function handleLogin() {
-    ipcRenderer.send(channels.REGISTER, { username: username.current, password: password.current });
+    window.electron.register({ username: username.current.value, password: password.current.value });
   }
 
   return (
