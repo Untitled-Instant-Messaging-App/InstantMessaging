@@ -10,15 +10,12 @@
   border-radius: 50%;
   height: 60px;
   aspect-ratio: 1;
+  transition: 0.2s;
+  cursor: pointer;
 }
 
 .profile:hover {
   border-radius: 30%;
-}
-
-.sidebar-wrapper > * {
-  transition: 0.2s;
-  cursor: pointer;
 }
 
 .sidebar-wrapper:hover > *:not(:hover) {

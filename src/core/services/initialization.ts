@@ -24,7 +24,7 @@ export default class Initializer {
       width: 800,
       backgroundColor: "black",
       webPreferences: {
-        nodeIntegration: true,
+        // nodeIntegration: true,
         preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       },
     });
