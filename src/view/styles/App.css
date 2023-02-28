@@ -15,7 +15,7 @@ body {
 input {
   border: unset;
   border-radius: 5px;
-  background-color: #ebebeb;
+  background-color: white;
   padding: 5px;
   min-width: 100px;
   color: black;

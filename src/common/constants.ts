@@ -1,4 +1,5 @@
 export const channels = {
   REGISTER: "regsiter-new-user",
-  FRIST_TIME_RUNNING: "first-time-running-app"
+  LOGIN: "login-existing-user",
+  FRIST_TIME_RUNNING: "first-time-running-app",
 };
