@@ -4,24 +4,31 @@ import ElectronStore from "electron-store";
 import StateManagement from "./stateManagement";
 
 export class Authentification {
-  private stateManager: StateManagement;
+  private store: ElectronStore;
   private isAuthenticated: boolean;
+  private identity: string;
+  private salt: string;
 
   constructor(store: ElectronStore) {
-    this.stateManager = new StateManagement(store);
+    this.store = store;
     this.isAuthenticated = false;
   }
 
   public login(credentials: LoginCredentials): AuthState {
-    const salt = this.stateManager.get("salt", true) as string;
-    const hash = this.stateManager.get("hash", true) as string;
+    const salt = this.store.get("salt", true) as string;
+    const hash = this.store.get("hash", true) as string;
     const isValid = bcrypt.hashSync(credentials.username + credentials.password, salt) === hash;
     if (isValid) {
       this.isAuthenticated = true;
-      this.stateManager.set("last-online", new Date().getTime());
-      this.stateManager.setUserEncryptionKey(credentials.password);
+      this.store.set("last-online", new Date().getTime());
     }
     return isValid ? AuthState.SignedIn : AuthState.SignInFailed;
+  }
+
+  public logout(): AuthState {
+    this.store.set("last-online", new Date().getTime());
+    this.isAuthenticated = false;
+    return AuthState.NotSignedIn;
   }
 
   public isUserAuthenticated(): boolean {
@@ -34,15 +41,16 @@ export class Authentification {
   }
 
   private registerToDevice(credentials: LoginCredentials): void {
-    const salt = bcrypt.genSaltSync();
-    const hash = bcrypt.hashSync(credentials.username + credentials.password, salt);
-    this.stateManager.set("salt", salt);
-    this.stateManager.set("hash", hash);
+    this.salt = bcrypt.genSaltSync();
+    this.identity = credentials.username + credentials.password;
+    const hash = bcrypt.hashSync(this.identity, this.salt);
+    this.store.set("salt", this.salt);
+    this.store.set("hash", hash);
   }
 
-  public getStateFromAuthedUser(): StateManagement {
+  public generateStateManagerFromUser(): StateManagement {
     if (this.isAuthenticated) {
-      return this.stateManager;
+      return new StateManagement(this.store, this.identity, this.salt);
     }
     return null;
   }

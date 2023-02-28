@@ -6,6 +6,7 @@ declare global {
     electron: {
       register: (credentials: LoginCredentials) => void;
       login: (credentials: LoginCredentials) => void;
+      logout: () => void;
       authState: (callback: (event: IpcRendererEvent, value: AuthState) => void) => void;
     };
   }

@@ -31,23 +31,28 @@ app.on("activate", () => {
 
 ipcMain.on(channels.REGISTER, async (event, credentials: LoginCredentials) => {
   if (!initializer.isFirstTimeRunningApp()) {
+    // TODO move to method
     throw Error("Can only register users if first time running the app.");
   }
   event.sender.send(channels.AUTH_STATE, AuthState.Registering);
   authentication.register(credentials);
-  await sleep(3000);
   event.sender.send(channels.AUTH_STATE, authentication.login(credentials));
 });
 
 ipcMain.on(channels.LOGIN, async (event, credentials: LoginCredentials) => {
   if (initializer.isFirstTimeRunningApp()) {
+    // TODO move to method
     throw Error("Cannot login if first time running the app.");
   }
   event.sender.send(channels.AUTH_STATE, AuthState.SigningIn);
-  await sleep(1000);
   event.sender.send(channels.AUTH_STATE, authentication.login(credentials));
 });
 
-function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+ipcMain.on(channels.LOGOUT, async (event, _) => {
+  if (!authentication.isUserAuthenticated()) {
+    // TODO move to method
+    throw Error("Cannot logout if no user authenticated.");
+  }
+  event.sender.send(channels.AUTH_STATE, AuthState.SigningOut);
+  event.sender.send(channels.AUTH_STATE, authentication.logout());
+});

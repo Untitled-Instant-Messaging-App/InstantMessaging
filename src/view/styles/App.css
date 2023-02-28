@@ -38,3 +38,34 @@ input[type="submit"]:hover {
   color: inherit;
   font-weight: bold;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #494949; 
+}
+
+.app-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: auto 8fr;
+}
+
+.sidebar {
+  height: 100%;
+}
+
+.chat {
+  height: 100%;
+}

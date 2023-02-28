@@ -3,6 +3,8 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import { AuthState as AuthState } from "../common/types";
 import useAuth from "./components/useAuth";
+import Sidebar from "./components/Sidebar";
+import Chat from "./components/Chat";
 
 export default function App() {
   const { state, isAuthed } = useAuth();
@@ -15,5 +17,15 @@ export default function App() {
     return <Login state={state} />;
   }
 
-  // return state === AuthState.LoggedIn && <div>Logged in</div>;
+  return (
+    isAuthed &&
+    <div className="app-wrapper">
+      <div className="sidebar">
+        <Sidebar />
+      </div>
+      <div className="chat">
+        <Chat />
+      </div>
+    </div>
+  );
 }
