@@ -1,23 +1,20 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { LoginCredentials } from "../../common/types";
+import { AuthState, LoginCredentials } from "../../common/types";
 import "../styles/Register.css";
 
-export default function Register() {
+export default function Register({ state }: { state: AuthState }) {
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const [isRegistering, setIsRegistering] = useState(false);
 
   function onClick(data: LoginCredentials) {
     window.electron.register(data);
-    setIsRegistering(true);
   }
 
   return (
-    <div className="registration-wrapper" style={isRegistering ? { opacity: 0.5, pointerEvents: "none" } : null}>
+    <div className="registration-wrapper" style={state === AuthState.Registering ? { opacity: 0.5, pointerEvents: "none" } : null}>
       <div>
         <h1>Registration</h1>
         <span>Looks like this is the first time you are running this app. Register a user and begin chating!</span>

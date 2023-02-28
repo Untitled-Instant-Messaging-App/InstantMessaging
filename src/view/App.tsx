@@ -1,12 +1,19 @@
-import { useState } from "react";
 import "./styles/App.css";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import { AuthState as AuthState } from "../common/types";
+import useAuth from "./components/useAuth";
 
 export default function App() {
-  const [isFirstTime, setIsFirstTime] = useState<boolean>();
-  window.electron.isFirstTimeRunning((_, value) => setIsFirstTime(value));
+  const { state, isAuthed } = useAuth();
 
-  return <Register />
-  return isFirstTime ? <Register /> : <Login />;
+  if (state === AuthState.NotRegistered || state === AuthState.Registering) {
+    return <Register state={state} />;
+  }
+
+  if (!isAuthed) {
+    return <Login state={state} />;
+  }
+
+  // return state === AuthState.LoggedIn && <div>Logged in</div>;
 }
