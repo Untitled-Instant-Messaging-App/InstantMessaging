@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import ElectronStore from "electron-store";
 import StateManagement from "./stateManagement";
 
-export class Registration {
+export class Authentification {
   private stateManager: StateManagement;
   private isAuthenticated: boolean;
 
