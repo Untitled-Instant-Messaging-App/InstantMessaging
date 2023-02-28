@@ -1,5 +1,6 @@
-import { BrowserWindow } from "electron";
+import { BrowserWindow, ipcMain } from "electron";
 import ElectronStore from "electron-store";
+import { LoginCredentials } from "../../common/types";
 import { channels } from "../../common/constants";
 import StateManagement from "./stateManagement";
 
@@ -16,7 +17,7 @@ export default class Initializer {
     this.#firstTimeRunning = !!this.#store.get("lastLogin");
   }
 
-  handleStartup(): void {
+  public handleStartup(): void {
     const window = new BrowserWindow({
       height: 600,
       width: 800,
@@ -30,7 +31,7 @@ export default class Initializer {
     window.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
     window.webContents.openDevTools({ mode: "detach" });
 
-    window.webContents.send(channels.HANDLER_FIRST_TIME, this.#firstTimeRunning);
+    window.webContents.on("did-finish-load", () => window.webContents.send(channels.FRIST_TIME_RUNNING, this.#firstTimeRunning));
 
     if (this.#firstTimeRunning) {
       console.log("Configuring app as first time running...");
@@ -39,3 +40,7 @@ export default class Initializer {
     }
   }
 }
+
+ipcMain.on(channels.REGISTER, (_, credentials: LoginCredentials) => {
+  console.log(credentials);
+});

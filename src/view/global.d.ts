@@ -5,7 +5,7 @@ declare global {
   interface Window {
     electron: {
       register: (credentials: LoginCredentials) => void;
-      handleFirstTime: (callback: (event: IpcRendererEvent, value: boolean) => void) => void;
+      isFirstTimeRunning: (callback: (event: IpcRendererEvent, value: boolean) => void) => void;
     };
   }
 }

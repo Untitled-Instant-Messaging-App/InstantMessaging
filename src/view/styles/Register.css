@@ -1,0 +1,48 @@
+.registration-wrapper {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  width: 300px;
+  height: fit-content;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  gap: 2em;
+}
+
+.registration-wrapper span {
+  font-size: 80%;
+}
+
+.registration-note {
+  padding: 15px 20px;
+  border-radius: 5px;
+  background-color: #084b9d;
+  background-color: #0d9d08;
+  background-color: #e51b1b;
+  background-color: #e5ca1b;
+  background-color: #222222;
+  font-size: 90%;
+}
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.registration-form input[type="text"] {
+  margin-bottom: 15px;
+}
+
+.registration-form input[type="submit"] {
+  margin-top: 15px;
+}
+
+.validation-error {
+  color: #e51b1b;
+  font-weight: bold;
+  font-size: 70%;
+  margin: 0;
+  margin-bottom: 7px;
+}

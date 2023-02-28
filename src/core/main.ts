@@ -1,5 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
-import { channels } from "../common/constants";
+import { app, BrowserWindow } from "electron";
 import Initializer from "./services/initialization";
 
 if (require("electron-squirrel-startup")) {
@@ -21,13 +20,4 @@ app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     // createWindow(); // OS X behavior
   }
-});
-
-ipcMain.on(channels.REGISTER, (_, args) => {
-  const { password, username } = args;
-  console.log(args);
-});
-
-ipcMain.on("test", (_, msg) => {
-  console.log(msg);
 });
