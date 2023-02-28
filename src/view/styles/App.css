@@ -51,7 +51,7 @@ input[type="submit"]:hover {
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #494949; 
+  background: #252525; 
 }
 
 .app-wrapper {

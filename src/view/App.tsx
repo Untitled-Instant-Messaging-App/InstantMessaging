@@ -9,16 +9,16 @@ import Chat from "./components/Chat";
 export default function App() {
   const { state, isAuthed } = useAuth();
 
-  if (state === AuthState.NotRegistered || state === AuthState.Registering) {
-    return <Register state={state} />;
-  }
+  // if (state === AuthState.NotRegistered || state === AuthState.Registering) {
+  //   return <Register state={state} />;
+  // }
 
-  if (!isAuthed) {
-    return <Login state={state} />;
-  }
+  // if (!isAuthed) {
+  //   return <Login state={state} />;
+  // }
 
   return (
-    isAuthed &&
+    // isAuthed &&
     <div className="app-wrapper">
       <div className="sidebar">
         <Sidebar />
