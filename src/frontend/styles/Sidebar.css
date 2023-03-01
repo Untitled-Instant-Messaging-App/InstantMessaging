@@ -21,18 +21,24 @@
   cursor: pointer;
 }
 
-.sidebar-wrapper:hover > *:not(:hover) {
+/* .sidebar-wrapper:hover > *:not(:hover) {
   opacity: 0.6;
-}
+} */
 
 .sidebar-item-separator {
   width: 60%;
   height: 3px;
   border-radius: 2.5px;
-  background-color: #0c0c0c;
+  background-color: #222222;
   margin: auto;
 }
 
 .add-friend:hover {
   background-color: #e5ca1b;
+  background-color: white;
+}
+
+.create-group-chat:hover {
+  background-color: #670b95;
+  background-color: white;
 }

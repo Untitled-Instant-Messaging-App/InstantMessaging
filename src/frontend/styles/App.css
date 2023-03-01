@@ -1,6 +1,8 @@
 body {
   margin: 0;
+  /* padding-top: 30px; */
   width: 100%;
+  /* height: calc(100% - 30px); */
   height: 100%;
   background-color: black;
   overflow: hidden;
@@ -10,6 +12,7 @@ body {
 * {
   box-sizing: border-box;
   color: white;
+  user-select: none;
 }
 
 input {
@@ -39,19 +42,16 @@ input[type="submit"]:hover {
   font-weight: bold;
 }
 
-/* width */
 ::-webkit-scrollbar {
   width: 5px;
   
   display: none;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   background: transparent; 
 }
  
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #0a0a0a; 
 }

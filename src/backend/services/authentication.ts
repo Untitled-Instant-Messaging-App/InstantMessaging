@@ -15,8 +15,11 @@ export class Authentification {
   }
 
   public login(credentials: LoginCredentials): AuthState {
-    const salt = this.store.get("salt", true) as string;
-    const hash = this.store.get("hash", true) as string;
+    const salt = this.store.get("salt") as string;
+    const hash = this.store.get("hash") as string;
+    if (!!hash) {
+      throw Error("No user registered to this device. Cannot validated user credentials.");
+    }
     const isValid = bcrypt.hashSync(credentials.username + credentials.password, salt) === hash;
     if (isValid) {
       this.isAuthenticated = true;
@@ -41,6 +44,9 @@ export class Authentification {
   }
 
   private registerToDevice(credentials: LoginCredentials): void {
+    if (!!this.store.get("hash")) {
+      throw Error("A user has already been registered to this device.");
+    }
     this.salt = bcrypt.genSaltSync();
     this.identity = credentials.username + credentials.password;
     const hash = bcrypt.hashSync(this.identity, this.salt);
@@ -48,7 +54,7 @@ export class Authentification {
     this.store.set("hash", hash);
   }
 
-  public generateStateManagerFromUser(): StateManagement {
+  public getStateManagerFromUser(): StateManagement {
     if (this.isAuthenticated) {
       return new StateManagement(this.store, this.identity, this.salt);
     }

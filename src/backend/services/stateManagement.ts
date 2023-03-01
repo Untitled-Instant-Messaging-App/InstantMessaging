@@ -19,7 +19,7 @@ export default class StateManagement {
     this.store.set(key, obj);
   }
 
-  public get<Type>(key: string, thrw?: boolean): Type {
+  public get<Type>(key: string, thrw?: boolean): Type { // thrw not working
     const obj = this.store.get(key);
     if (thrw && obj == null) {
       throw Error(`Objcet with key \`${key}\ does not exist.`);
@@ -27,7 +27,7 @@ export default class StateManagement {
     return obj ? (obj as Type) : null;
   }
 
-  public setUserSensitive(key: string, obj: any, override?: boolean): void {
+  public setSensitive(key: string, obj: any, override?: boolean): void {
     if (override && this.store.get(key)) {
       throw Error(`Object with key \`${key}\` already exists.`);
     }
@@ -35,7 +35,7 @@ export default class StateManagement {
     this.store.set(key, encrypted);
   }
 
-  public getUserSensitive<Type>(key: string, thrw?: boolean): Type {
+  public getSensitive<Type>(key: string, thrw?: boolean): Type {
     const encrypted = this.store.get(key);
     const decrypted = this.decrypt(encrypted, this.encryptionKey, this.salt);
     const obj = JSON.parse(decrypted);

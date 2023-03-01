@@ -6,7 +6,7 @@ export default function Sidebar() {
       <div className="profile" onClick={() => window.electron.logout()} />
       <div className="sidebar-item-separator" />
       <div className="profile add-friend" />
-      <div className="profile" />
+      <div className="profile create-group-chat" />
       <div className="sidebar-item-separator" />
       <div className="profile" />
       <div className="profile" />
