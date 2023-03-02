@@ -18,6 +18,7 @@ function createWindow(): void {
     height: 600,
     width: 800,
     backgroundColor: "black",
+    // titleBarStyle: "hidden",
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },

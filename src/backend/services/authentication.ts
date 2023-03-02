@@ -9,7 +9,6 @@ export class Authentification {
 
   constructor() {
     this.store = new ElectronStore();
-    this.store.delete("challenge");
     this.isChallengePresent = !!this.store.get("challenge");
     this.isAuthenticated = false;
   }

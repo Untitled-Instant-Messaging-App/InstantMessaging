@@ -33,18 +33,18 @@ export default function App() {
         ) : (
           <div className="hello-there">
             <div>
-              <h1>Secure</h1>
               <Safe />
+              <h1>Secure</h1>
               <p>E2E encrypted messages using the Signal Protocol</p>
             </div>
             <div>
-              <h1>Fast</h1>
               <Rocket />
+              <h1>Fast</h1>
               <p>Using fast and decentralized XMPP communication</p>
             </div>
             <div>
-              <h1>Intuitive</h1>
               <Phone />
+              <h1>Intuitive</h1>
               <p>Familar design language we all expect for messaging</p>
             </div>
           </div>

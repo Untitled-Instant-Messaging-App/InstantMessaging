@@ -92,6 +92,7 @@ input:focus::-webkit-input-placeholder {
 .hello-there svg {
   width: 100%;
   height: 50%;
+  transform: scale(0.8);
 }
 
 @keyframes start-animation {
