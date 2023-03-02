@@ -127,7 +127,8 @@ export default function Chat({ chat }: { chat: string }) {
       <div className="chat-conversation">
         {messages.map(m => (
           <div key={m.id} style={{ flexDirection: m.sender === "you" ? "row-reverse" : "row" }} className="chat-item-wrapper">
-            <div style={{ color: m.sender !== "you" ? palette?.LightVibrant.hex : "inherit",  }} className="chat-bubble">
+            <div className="chat-bubble">
+              {/* <div style={{ color: m.sender !== "you" ? palette?.LightVibrant.hex : "inherit",  }} className="chat-bubble"> */}
               {m.content}
             </div>
           </div>
