@@ -23,31 +23,30 @@ export default function App() {
   }
 
   return (
-    isAuthed && (
-      <div className="app-wrapper">
-        <Sidebar onClick={setSelectedChat} />
-        {selectedChat ? (
-          <Chat chat={selectedChat} />
-        ) : (
-          <div className="hello-there">
-            <div>
-              <h1>Secure</h1>
-              <Safe />
-              <p>E2E encrypted messages using the Signal Protocol</p>
-            </div>
-            <div>
-              <h1>Fast</h1>
-              <Rocket />
-              <p>Using fast and decentralized XMPP communication</p>
-            </div>
-            <div>
-              <h1>Intuitive</h1>
-              <Phone />
-              <p>Familar design language we all expect for messaging</p>
-            </div>
+    // isAuthed &&
+    <div className="app-wrapper">
+      <Sidebar onClick={setSelectedChat} />
+      {selectedChat ? (
+        <Chat chat={selectedChat} />
+      ) : (
+        <div className="hello-there">
+          <div>
+            <h1>Secure</h1>
+            <Safe />
+            <p>E2E encrypted messages using the Signal Protocol</p>
           </div>
-        )}
-      </div>
-    )
+          <div>
+            <h1>Fast</h1>
+            <Rocket />
+            <p>Using fast and decentralized XMPP communication</p>
+          </div>
+          <div>
+            <h1>Intuitive</h1>
+            <Phone />
+            <p>Familar design language we all expect for messaging</p>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

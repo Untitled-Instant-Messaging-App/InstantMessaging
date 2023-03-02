@@ -1,5 +1,4 @@
 import { app, BrowserWindow, ipcMain } from "electron";
-import ElectronStore from "electron-store";
 import { Authentification } from "./services/authentication";
 import { channels } from "../common/constants";
 import { LoginCredentials, AuthState } from "../common/types";
