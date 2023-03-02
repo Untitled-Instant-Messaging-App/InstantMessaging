@@ -42,18 +42,22 @@ input[type="submit"]:hover {
   font-weight: bold;
 }
 
+input:focus::-webkit-input-placeholder {
+  color: transparent;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
-  
+
   display: none;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent; 
+  background: transparent;
 }
- 
+
 ::-webkit-scrollbar-thumb {
-  background: #0a0a0a; 
+  background: #0a0a0a;
 }
 
 .app-wrapper {
@@ -62,12 +66,5 @@ input[type="submit"]:hover {
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: auto 8fr;
-}
-
-.sidebar {
-  height: 100%;
-}
-
-.chat {
-  height: 100%;
+  padding-right: 10px;
 }
