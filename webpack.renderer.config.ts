@@ -1,12 +1,20 @@
-import type { Configuration } from 'webpack';
+import type { Configuration } from "webpack";
 
-import { rules } from './webpack.rules';
-import { plugins } from './webpack.plugins';
+import { rules } from "./webpack.rules";
+import { plugins } from "./webpack.plugins";
+import path from "path";
 
-rules.push({
-  test: /\.css$/,
-  use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
-});
+rules.push(
+  {
+    test: /\.css$/,
+    use: [{ loader: "style-loader" }, { loader: "css-loader" }],
+  },
+  {
+    test: /\.(svg|png|jpg|gif)$/,
+    include: [path.resolve(__dirname, "./src/frontend/assets")],
+    type: "asset/inline",
+  }
+);
 
 export const rendererConfig: Configuration = {
   module: {
@@ -14,6 +22,6 @@ export const rendererConfig: Configuration = {
   },
   plugins,
   resolve: {
-    extensions: ['.js', '.ts', '.jsx', '.tsx', '.css'],
+    extensions: [".js", ".ts", ".jsx", ".tsx", ".css"],
   },
 };

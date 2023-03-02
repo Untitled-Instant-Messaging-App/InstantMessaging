@@ -14,13 +14,13 @@ export default function App() {
   const { state, isAuthed } = useAuth();
   const [selectedChat, setSelectedChat] = useState(null);
 
-  if (state === AuthState.NotRegistered || state === AuthState.Registering) {
-    return <Register state={state} />;
-  }
+  // if (state === AuthState.NotRegistered || state === AuthState.Registering) {
+  //   return <Register state={state} />;
+  // }
 
-  if (!isAuthed) {
-    return <Login state={state} />;
-  }
+  // if (!isAuthed) {
+  //   return <Login state={state} />;
+  // }
 
   return (
     // isAuthed &&
