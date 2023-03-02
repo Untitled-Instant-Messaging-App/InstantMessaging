@@ -22,9 +22,9 @@ export default function Login({ state }: { state: AuthState }) {
       </div>
       <form className="registration-form" onSubmit={handleSubmit(onClick)}>
         {errors.username?.type === "required" && <p className="validation-error">Username is required</p>}
-        <input type="text" placeholder="Enter your username" {...register("username", { required: true })} />
+        <input type="text" placeholder="Enter your username" {...register("username", { required: true })} defaultValue="admin" />
         {errors.password?.type === "required" && <p className="validation-error">Password is required</p>}
-        <input type="text" placeholder="Enter your password" {...register("password", { required: true })} />
+        <input type="text" placeholder="Enter your password" {...register("password", { required: true })} defaultValue="adminadmin" />
         <input type="submit" value="Login" />
       </form>
       <div className="registration-note">Please note that a user is tied to a device. Your credentials will only be valid on this device.</div>

@@ -17,7 +17,7 @@
 
 .chat-user {
   display: flex;
-  gap: 7px;
+  gap: 10px;
   padding: 10px;
   align-items: center;
   width: fit-content;
