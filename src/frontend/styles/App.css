@@ -68,3 +68,21 @@ input:focus::-webkit-input-placeholder {
   grid-template-columns: auto 8fr;
   padding-right: 10px;
 }
+
+.hello-there {
+  align-self: center;
+  height: fit-content;
+  display: flex;
+  justify-content: space-around;
+}
+
+.hello-there > * {
+  width: 200px;
+  text-align: center;
+  transform: scale(0.8);
+}
+
+.hello-there svg {
+  width: 100%;
+  height: 50%;
+}
