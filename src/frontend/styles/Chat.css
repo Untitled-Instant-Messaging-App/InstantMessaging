@@ -4,6 +4,7 @@
   width: 100%;
   border-radius: 10px;
   overflow: hidden;
+  animation: chat-animation 0.2s ease-in-out forwards;
 }
 
 .chat-header {
@@ -66,4 +67,15 @@
   border-radius: 10px;
   background-color: #636363;
   padding: 10px 15px;
+}
+
+@keyframes chat-animation {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
