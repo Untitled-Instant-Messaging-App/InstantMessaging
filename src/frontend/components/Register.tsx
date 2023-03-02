@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
-import { AuthState, LoginCredentials } from "../../common/types";
+import { AuthState, Registration } from "../../common/types";
+import imageToUrl from "../api/images";
 import "../styles/Register.css";
 
 export default function Register({ state }: { state: AuthState }) {
@@ -9,8 +10,12 @@ export default function Register({ state }: { state: AuthState }) {
     handleSubmit,
   } = useForm();
 
-  function onClick(data: LoginCredentials) {
-    window.electron.register(data);
+  async function onClick(data: Registration) {
+    let imageUrl = null;
+    if (data.image[0]) {
+      imageUrl = await imageToUrl(data.image[0]);
+    }
+    window.electron.register({ ...data, image: imageUrl });
   }
 
   return (
@@ -26,6 +31,7 @@ export default function Register({ state }: { state: AuthState }) {
         {errors.password?.type === "required" && <p className="validation-error">Password is required</p>}
         {errors.password?.type === "minLength" && <p className="validation-error">Password must be at least 10 characters long</p>}
         <input type="text" placeholder="Enter a password" {...register("password", { required: true, minLength: 10 })} />
+        <input type="file" {...register("image")} />
         <input type="submit" value="Register" />
       </form>
       <div className="registration-note">Please note that a user is tied to a device. Upon registration, your credentials will only be valid on this device.</div>

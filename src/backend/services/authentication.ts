@@ -1,7 +1,7 @@
-import { AuthState, LoginCredentials } from "../../common/types";
 import bcrypt from "bcrypt";
 import ElectronStore from "electron-store";
 import StateManagement from "./stateManagement";
+import { AuthState, LoginCredentials, Registration } from "../../common/types";
 
 export class Authentification {
   private store: ElectronStore;
@@ -36,9 +36,12 @@ export class Authentification {
     return AuthState.NotSignedIn;
   }
 
-  public register(credentials: LoginCredentials) {
+  public register(registration: Registration): AuthState {
+    const credentials = { username: registration.username, password: registration.password };
     this.registerToDevice(credentials);
     // generate keys
+
+    return AuthState.SignedIn;
   }
 
   private registerToDevice(credentials: LoginCredentials): void {

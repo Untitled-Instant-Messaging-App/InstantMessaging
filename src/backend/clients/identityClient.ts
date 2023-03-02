@@ -1,11 +1,12 @@
 import axios from "axios";
+import { BasicUser, User } from "../../common/types";
 
 export default class IdentityClient {
-  public registerUser() {
-    
+  public async register(user: BasicUser): Promise<User> {
+    return await axios.post("/register/user", user);
   }
 
-  public deleteUser() {
-
+  public async unregister(user: User): Promise<void> {
+    await axios.delete("/unregister/user/" + user.id);
   }
 }

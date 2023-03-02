@@ -2,91 +2,10 @@ import { useState, useRef, useEffect } from "react";
 import "../styles/Chat.css";
 import image from "../assets/unnamed.jpg";
 import Vibrant from "node-vibrant";
-
-interface Message {
-  id: string;
-  sender: string;
-  content: string;
-  timestamp: Date;
-}
-
-const oldMessages: Message[] = [
-  {
-    id: "a",
-    sender: "you",
-    content: "Hello!",
-    timestamp: new Date(),
-  },
-  {
-    id: "b",
-    sender: "them",
-    content: "Hello there!",
-    timestamp: new Date(),
-  },
-  {
-    id: "c",
-    sender: "them",
-    content: "How are you?",
-    timestamp: new Date(),
-  },
-  {
-    id: "d",
-    sender: "you",
-    content: "I'm good thanks!",
-    timestamp: new Date(),
-  },
-  {
-    id: "e",
-    sender: "you",
-    content: "Hello!",
-    timestamp: new Date(),
-  },
-  {
-    id: "f",
-    sender: "them",
-    content: "Hello there!",
-    timestamp: new Date(),
-  },
-  {
-    id: "g",
-    sender: "them",
-    content: "How are you?",
-    timestamp: new Date(),
-  },
-  {
-    id: "h",
-    sender: "you",
-    content: "I'm good thanks!",
-    timestamp: new Date(),
-  },
-  {
-    id: "i",
-    sender: "you",
-    content: "Hello!",
-    timestamp: new Date(),
-  },
-  {
-    id: "j",
-    sender: "them",
-    content: "Hello there!",
-    timestamp: new Date(),
-  },
-  {
-    id: "k",
-    sender: "them",
-    content: "How are you?",
-    timestamp: new Date(),
-  },
-  {
-    id: "l",
-    sender: "you",
-    content: "I'm good thanks!",
-    timestamp: new Date(),
-  },
-];
+import { Message } from "../../common/types";
 
 export default function Chat({ chat }: { chat: string }) {
-  const [messages, setMessages] = useState(oldMessages);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [palette, setPalette] = useState(null);
   const bottom = useRef(null);
 
@@ -104,6 +23,7 @@ export default function Chat({ chat }: { chat: string }) {
         const newMessage: Message = {
           id: new Date().toISOString(),
           sender: "you",
+          receiver: "",
           content: event.target.value,
           timestamp: new Date(),
         };

@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import { Authentification } from "./services/authentication";
 import { channels } from "../common/constants";
-import { LoginCredentials, AuthState } from "../common/types";
+import { LoginCredentials, AuthState, Registration } from "../common/types";
 import isDev from "electron-is-dev";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -18,9 +18,7 @@ function createWindow(): void {
     height: 600,
     width: 800,
     backgroundColor: "black",
-    // frame: false,
     webPreferences: {
-      nodeIntegration: true,
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
   });
@@ -34,34 +32,29 @@ function createWindow(): void {
   });
 }
 
-app.whenReady().then(() => {
-  createWindow();
-});
+app.whenReady().then(createWindow);
 
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
+  process.platform !== "darwin" && app.quit();
 });
 
 app.on("activate", () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
+  BrowserWindow.getAllWindows().length === 0 && createWindow();
 });
 
-ipcMain.on(channels.REGISTER, async (event, credentials: LoginCredentials) => {
-  event.sender.send(channels.AUTH_STATE, AuthState.Registering);
-  authentication.register(credentials);
-  event.sender.send(channels.AUTH_STATE, authentication.login(credentials));
+ipcMain.on(channels.REGISTER, async (event, registration: Registration) => {
+  event.sender.send(channels.AUTH_STATE, AuthState.Registering); // TODO move to callback
+
+  console.log(registration)
+  event.sender.send(channels.AUTH_STATE, authentication.register(registration));
 });
 
 ipcMain.on(channels.LOGIN, async (event, credentials: LoginCredentials) => {
-  event.sender.send(channels.AUTH_STATE, AuthState.SigningIn);
+  event.sender.send(channels.AUTH_STATE, AuthState.SigningIn); // TODO move to callback
   event.sender.send(channels.AUTH_STATE, authentication.login(credentials));
 });
 
 ipcMain.on(channels.LOGOUT, async (event, _) => {
-  event.sender.send(channels.AUTH_STATE, AuthState.SigningOut);
+  event.sender.send(channels.AUTH_STATE, AuthState.SigningOut); // TODO move to callback
   event.sender.send(channels.AUTH_STATE, authentication.logout());
 });
