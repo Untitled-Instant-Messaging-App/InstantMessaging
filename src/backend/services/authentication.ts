@@ -8,16 +8,18 @@ export class Authentification {
   private isAuthenticated: boolean;
   private identity: string;
   private salt: string;
+  private hasRegisteredUser: boolean;
 
-  constructor(store: ElectronStore) {
-    this.store = store;
+  constructor() {
+    this.store = new ElectronStore();
     this.isAuthenticated = false;
+    this.hasRegisteredUser = !!this.store.get("salt");
   }
 
   public login(credentials: LoginCredentials): AuthState {
     const salt = this.store.get("salt") as string;
     const hash = this.store.get("hash") as string;
-    if (!!hash) {
+    if (!hash) {
       throw Error("No user registered to this device. Cannot validated user credentials.");
     }
     const isValid = bcrypt.hashSync(credentials.username + credentials.password, salt) === hash;
@@ -32,10 +34,6 @@ export class Authentification {
     this.store.set("last-online", new Date().getTime());
     this.isAuthenticated = false;
     return AuthState.NotSignedIn;
-  }
-
-  public isUserAuthenticated(): boolean {
-    return this.isAuthenticated;
   }
 
   public register(credentials: LoginCredentials) {
@@ -59,5 +57,13 @@ export class Authentification {
       return new StateManagement(this.store, this.identity, this.salt);
     }
     return null;
+  }
+
+  public isUserAuthenticated(): boolean {
+    return this.isAuthenticated;
+  }
+
+  public getInitialAuthState(): AuthState {
+    return this.hasRegisteredUser ? AuthState.NotSignedIn : AuthState.NotRegistered;
   }
 }

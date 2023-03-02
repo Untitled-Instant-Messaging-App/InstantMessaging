@@ -12,9 +12,7 @@ if (require("electron-squirrel-startup")) {
   app.quit();
 }
 
-const store = new ElectronStore();
-const isFirstTimeRunningApp = !!!store.get("last-online");
-const authentication = new Authentification(store);
+const authentication = new Authentification();
 
 function createWindow(): void {
   const window = new BrowserWindow({
@@ -33,8 +31,7 @@ function createWindow(): void {
     window.webContents.openDevTools({ mode: "detach" });
   }
   window.webContents.on("did-finish-load", () => {
-    const initialAuthState = isFirstTimeRunningApp ? AuthState.NotRegistered : AuthState.NotSignedIn;
-    window.webContents.send(channels.AUTH_STATE, initialAuthState);
+    window.webContents.send(channels.AUTH_STATE, authentication.getInitialAuthState());
   });
 }
 
