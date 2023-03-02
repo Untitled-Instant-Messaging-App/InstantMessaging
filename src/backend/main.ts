@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import { Authentification } from "./services/authentication";
 import { channels } from "../common/constants";
-import { LoginCredentials, AuthState, Registration } from "../common/types";
+import { LoginCredentials, Registration } from "../common/types";
 import isDev from "electron-is-dev";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -28,7 +28,7 @@ function createWindow(): void {
     window.webContents.openDevTools({ mode: "detach" });
   }
   window.webContents.on("did-finish-load", () => {
-    window.webContents.send(channels.AUTH_STATE, authentication.getInitialAuthState());
+    window.webContents.send(channels.IS_REGISTERED, authentication.hasRegistered());
   });
 }
 
@@ -43,18 +43,16 @@ app.on("activate", () => {
 });
 
 ipcMain.on(channels.REGISTER, async (event, registration: Registration) => {
-  event.sender.send(channels.AUTH_STATE, AuthState.Registering); // TODO move to callback
-
-  console.log(registration)
-  event.sender.send(channels.AUTH_STATE, authentication.register(registration));
+  authentication.register(registration);
+  event.sender.send(channels.IS_REGISTERED, authentication.hasRegistered())
 });
 
 ipcMain.on(channels.LOGIN, async (event, credentials: LoginCredentials) => {
-  event.sender.send(channels.AUTH_STATE, AuthState.SigningIn); // TODO move to callback
-  event.sender.send(channels.AUTH_STATE, authentication.login(credentials));
+  const authResult = authentication.login(credentials);
+  event.sender.send(channels.IS_AUTHENTICATED, authResult);
 });
 
 ipcMain.on(channels.LOGOUT, async (event, _) => {
-  event.sender.send(channels.AUTH_STATE, AuthState.SigningOut); // TODO move to callback
-  event.sender.send(channels.AUTH_STATE, authentication.logout());
+  const authResult = authentication.logout();
+  event.sender.send(channels.IS_AUTHENTICATED, authResult);
 });

@@ -1,16 +1,19 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { AuthState, Registration } from "../../common/types";
+import { Registration } from "../../common/types";
 import imageToUrl from "../api/images";
 import "../styles/Register.css";
 
-export default function Register({ state }: { state: AuthState }) {
+export default function Register() {
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
+  const [isRegistering, setIsRegistering] = useState(false);
 
   async function onClick(data: Registration) {
+    setIsRegistering(true);
     let imageUrl = null;
     if (data.image[0]) {
       imageUrl = await imageToUrl(data.image[0]);
@@ -19,7 +22,7 @@ export default function Register({ state }: { state: AuthState }) {
   }
 
   return (
-    <div className="registration-wrapper" style={state === AuthState.Registering ? { opacity: 0.5, pointerEvents: "none" } : null}>
+    <div className="registration-wrapper" style={isRegistering ? { opacity: 0.5, pointerEvents: "none" } : null}>
       <div>
         <h1>Registration</h1>
         <span>Looks like this is the first time you are running this app. Register a user and begin chating!</span>

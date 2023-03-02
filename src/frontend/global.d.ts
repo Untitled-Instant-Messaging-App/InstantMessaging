@@ -7,7 +7,8 @@ declare global {
       register: (registration: Registration) => void;
       login: (credentials: LoginCredentials) => void;
       logout: () => void;
-      authState: (callback: (event: IpcRendererEvent, value: AuthState) => void) => void;
+      isAuthenticated: (callback: (event: IpcRendererEvent, isAuthenticated: boolean) => void) => void;
+      isRegistered: (callback: (event: IpcRendererEvent, isRegistered: boolean) => void) => void;
     };
   }
 }

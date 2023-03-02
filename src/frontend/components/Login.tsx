@@ -1,24 +1,27 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { AuthState, LoginCredentials } from "../../common/types";
+import { LoginCredentials } from "../../common/types";
 import "../styles/Register.css";
 
-export default function Login({ state }: { state: AuthState }) {
+export default function Login() {
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
+  const [isLogingin, setIsLogingin] = useState(false);
 
   function onClick(data: LoginCredentials) {
+    setIsLogingin(true);
     window.electron.login(data);
   }
 
   return (
-    <div className="registration-wrapper" style={state === AuthState.SigningIn ? { opacity: 0.5, pointerEvents: "none" } : null}>
+    <div className="registration-wrapper" style={isLogingin ? { opacity: 0.5, pointerEvents: "none" } : null}>
       <div>
         <h1>Login</h1>
         <span>Login with your username and password.</span>
-        {state === AuthState.SignInFailed && <p className="validation-error">Username or password incorrect.</p>}
+        {false && <p className="validation-error">Username or password incorrect.</p>}
       </div>
       <form className="registration-form" onSubmit={handleSubmit(onClick)}>
         {errors.username?.type === "required" && <p className="validation-error">Username is required</p>}

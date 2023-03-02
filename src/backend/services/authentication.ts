@@ -1,72 +1,62 @@
 import bcrypt from "bcrypt";
 import ElectronStore from "electron-store";
-import StateManagement from "./stateManagement";
-import { AuthState, LoginCredentials, Registration } from "../../common/types";
+import { LoginCredentials, Registration } from "../../common/types";
 
 export class Authentification {
   private store: ElectronStore;
   private isAuthenticated: boolean;
-  private identity: string;
-  private salt: string;
-  private hasRegisteredUser: boolean;
+  private isChallengePresent: boolean;
 
   constructor() {
     this.store = new ElectronStore();
+    this.store.delete("challenge");
+    this.isChallengePresent = !!this.store.get("challenge");
     this.isAuthenticated = false;
-    this.hasRegisteredUser = !!this.store.get("salt");
   }
 
-  public login(credentials: LoginCredentials): AuthState {
-    const salt = this.store.get("salt") as string;
-    const hash = this.store.get("hash") as string;
-    if (!hash) {
+  public login(credentials: LoginCredentials): boolean {
+    if (!this.isChallengePresent) {
       throw Error("No user registered to this device. Cannot validated user credentials.");
     }
-    const isValid = bcrypt.hashSync(credentials.username + credentials.password, salt) === hash;
-    if (isValid) {
-      this.isAuthenticated = true;
-      this.store.set("last-online", new Date().getTime());
-    }
-    return isValid ? AuthState.SignedIn : AuthState.SignInFailed;
-  }
-
-  public logout(): AuthState {
-    this.store.set("last-online", new Date().getTime());
-    this.isAuthenticated = false;
-    return AuthState.NotSignedIn;
-  }
-
-  public register(registration: Registration): AuthState {
-    const credentials = { username: registration.username, password: registration.password };
-    this.registerToDevice(credentials);
-    // generate keys
-
-    return AuthState.SignedIn;
-  }
-
-  private registerToDevice(credentials: LoginCredentials): void {
-    if (!!this.store.get("hash")) {
-      throw Error("A user has already been registered to this device.");
-    }
-    this.salt = bcrypt.genSaltSync();
-    this.identity = credentials.username + credentials.password;
-    const hash = bcrypt.hashSync(this.identity, this.salt);
-    this.store.set("salt", this.salt);
-    this.store.set("hash", hash);
-  }
-
-  public getStateManagerFromUser(): StateManagement {
-    if (this.isAuthenticated) {
-      return new StateManagement(this.store, this.identity, this.salt);
-    }
-    return null;
-  }
-
-  public isUserAuthenticated(): boolean {
+    const isValid = this.validateChallenge(credentials.password);
+    this.isAuthenticated = isValid;
     return this.isAuthenticated;
   }
 
-  public getInitialAuthState(): AuthState {
-    return this.hasRegisteredUser ? AuthState.NotSignedIn : AuthState.NotRegistered;
+  public logout(): boolean {
+    if (!this.isAuthenticated) {
+      throw Error("Cannot sign out unauthenticated user.");
+    }
+    this.isAuthenticated = false;
+    return this.isAuthenticated;
+  }
+
+  public register(registration: Registration): void {
+    if (this.isChallengePresent) {
+      throw Error("A user has already been registered to this device.");
+    }
+    const credentials = { username: registration.username, password: registration.password };
+    this.generateChallenge(credentials.password);
+  }
+
+  public hasRegistered(): boolean {
+    return this.isChallengePresent;
+  }
+
+  private generateChallenge(identity: string) {
+    const salt = bcrypt.genSaltSync();
+    const hash = bcrypt.hashSync(identity, salt);
+    this.store.set("salt", salt);
+    this.store.set("challenge", hash);
+    this.isChallengePresent = true;
+  }
+
+  private validateChallenge(identity: string): boolean {
+    const salt = this.store.get("salt") as string;
+    const challenge = this.store.get("challenge") as string;
+    if (!challenge) {
+      throw Error("No challenge present to validated.");
+    }
+    return bcrypt.hashSync(identity, salt) === challenge;
   }
 }
