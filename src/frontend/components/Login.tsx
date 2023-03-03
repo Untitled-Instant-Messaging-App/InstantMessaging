@@ -11,7 +11,7 @@ export default function Login() {
   } = useForm();
   const [isLogingin, setIsLogingin] = useState(false);
   const [hasFailed, setHasFailed] = useState(false);
-  window.electron.isAuthenticated(() => {
+  window.electron.authState(() => {
     setHasFailed(true);
     setIsLogingin(false);
   });

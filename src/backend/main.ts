@@ -5,6 +5,7 @@ import isDev from "electron-is-dev";
 import StateManagement from "./services/stateManagement";
 import ElectronStore from "electron-store";
 import { Registration, LoginCredentials } from "../common/types";
+import { AuthState } from "../common/types/AuthState";
 
 require("electron-squirrel-startup") && app.quit();
 
@@ -26,7 +27,7 @@ function createWindow() {
     window.webContents.openDevTools({ mode: "detach" });
   }
   window.webContents.on("did-finish-load", () => {
-    window.webContents.send(channels.IS_REGISTERED, authentication.hasRegistered());
+    window.webContents.send(channels.AUTH_STATE, authentication.hasRegistered() ? AuthState.SignedOut : AuthState.Unregistered);
   });
 }
 
@@ -42,16 +43,15 @@ app.on("activate", () => {
 
 ipcMain.on(channels.REGISTER, async (event, registration: Registration) => {
   const result = await authentication.register(registration);
-  event.sender.send(channels.IS_AUTHENTICATED, result);
-  event.sender.send(channels.IS_REGISTERED, result);
+  event.sender.send(channels.AUTH_STATE, result ? AuthState.SignedIn : AuthState.Unregistered);
 });
 
 ipcMain.on(channels.LOGIN, (event, credentials: LoginCredentials) => {
-  event.sender.send(channels.IS_AUTHENTICATED, authentication.login(credentials));
+  event.sender.send(channels.AUTH_STATE, authentication.login(credentials) ? AuthState.SignedIn : AuthState.SignedOut);
 });
 
 ipcMain.on(channels.LOGOUT, (event, _) => {
-  event.sender.send(channels.IS_AUTHENTICATED, authentication.logout());
+  event.sender.send(channels.AUTH_STATE, authentication.logout() ? AuthState.SignedIn : AuthState.SignedOut);
 });
 
 ipcMain.handle(channels.HANDLE_USER_PROFILE, () => {
@@ -61,8 +61,6 @@ ipcMain.handle(channels.HANDLE_USER_PROFILE, () => {
 const store = new ElectronStore();
 const authentication = new Authentification(store);
 const stateManagement = new StateManagement(store);
-
-authentication.on("onRegister", console.log);
 
 authentication.on("onRegister", (hasSucceeded, credentials, user) => {
   if (hasSucceeded) {

@@ -7,24 +7,24 @@ import { useState } from "react";
 import Safe from "./assets/Safe";
 import Rocket from "./assets/Rocket";
 import Phone from "./assets/Phone";
+import { AuthState } from "../common/types/AuthState";
 
 export default function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isRegistered, setIsRegistered] = useState(false);
-  window.electron.isAuthenticated((_, state) => setIsAuthenticated(state));
-  window.electron.isRegistered((_, state) => setIsRegistered(state));
+  const [authState, setAuthState] = useState<AuthState>();
   const [selectedChat, setSelectedChat] = useState(null);
 
-  if (!isRegistered) {
+  window.electron.authState((_, state) => setAuthState(state));
+
+  if (authState === AuthState.Unregistered) {
     return <Register />;
   }
 
-  if (!isAuthenticated) {
+  if (authState === AuthState.SignedOut) {
     return <Login />;
   }
 
   return (
-    isAuthenticated && (
+    authState === AuthState.SignedIn && (
       <div className="app-wrapper">
         <Sidebar onClick={setSelectedChat} />
         {selectedChat ? (
