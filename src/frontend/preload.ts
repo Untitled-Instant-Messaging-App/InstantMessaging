@@ -1,5 +1,5 @@
 import { channels } from "../common/constants";
-import { LoginCredentials, Registration } from "../common/types";
+import { LoginCredentials, Registration, User } from "../common/types";
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
 
 contextBridge.exposeInMainWorld("electron", {
@@ -8,4 +8,5 @@ contextBridge.exposeInMainWorld("electron", {
   logout: () => ipcRenderer.send(channels.LOGOUT),
   isAuthenticated: (callback: (event: IpcRendererEvent, isAuthenticated: boolean) => void) => ipcRenderer.on(channels.IS_AUTHENTICATED, callback),
   isRegistered: (callback: (event: IpcRendererEvent, isRegistered: boolean) => void) => ipcRenderer.on(channels.IS_REGISTERED, callback),
+  fetchProfile: () => ipcRenderer.invoke(channels.HANDLE_USER_PROFILE),
 });

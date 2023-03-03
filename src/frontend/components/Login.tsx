@@ -10,6 +10,11 @@ export default function Login() {
     handleSubmit,
   } = useForm();
   const [isLogingin, setIsLogingin] = useState(false);
+  const [hasFailed, setHasFailed] = useState(false);
+  window.electron.isAuthenticated(() => {
+    setHasFailed(true);
+    setIsLogingin(false);
+  });
 
   function onClick(data: LoginCredentials) {
     setIsLogingin(true);
@@ -21,13 +26,13 @@ export default function Login() {
       <div>
         <h1>Login</h1>
         <span>Login with your username and password.</span>
-        {false && <p className="validation-error">Username or password incorrect.</p>}
+        {hasFailed && <p className="validation-error">Username or password incorrect.</p>}
       </div>
       <form className="registration-form" onSubmit={handleSubmit(onClick)}>
         {errors.username?.type === "required" && <p className="validation-error">Username is required</p>}
-        <input type="text" placeholder="Enter your username" {...register("username", { required: true })} defaultValue="admin" />
+        <input type="text" placeholder="Enter your username" {...register("username", { required: true })} defaultValue="greffgreff" />
         {errors.password?.type === "required" && <p className="validation-error">Password is required</p>}
-        <input type="text" placeholder="Enter your password" {...register("password", { required: true })} defaultValue="adminadmin" />
+        <input type="text" placeholder="Enter your password" {...register("password", { required: true })} defaultValue="Gaojinglu80!" />
         <input type="submit" value="Login" />
       </form>
       <div className="registration-note">Please note that a user is tied to a device. Your credentials will only be valid on this device.</div>

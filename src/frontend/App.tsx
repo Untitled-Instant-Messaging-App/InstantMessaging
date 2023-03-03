@@ -13,7 +13,6 @@ export default function App() {
   const [isRegistered, setIsRegistered] = useState(false);
   window.electron.isAuthenticated((_, state) => setIsAuthenticated(state));
   window.electron.isRegistered((_, state) => setIsRegistered(state));
-
   const [selectedChat, setSelectedChat] = useState(null);
 
   if (!isRegistered) {

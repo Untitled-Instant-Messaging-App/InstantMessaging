@@ -1,7 +1,7 @@
 export interface BasicUser {
   displayName: string;
   image: string;
-  keyBundle: {
+  keyBundle?: {
     identityKey: Key;
     signedPreKey: Key;
     oneTimePerKeys: Key[];

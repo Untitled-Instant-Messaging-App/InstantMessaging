@@ -1,9 +1,10 @@
 import "../styles/Sidebar.css";
+import Profile from "./Profile";
 
 export default function Sidebar({ onClick }: { onClick: (chat: string) => void }) {
   return (
     <div className="sidebar-wrapper">
-      <div className="profile" onClick={() => window.electron.logout()} />
+      <Profile />
       <div className="sidebar-item-separator" />
       <div className="profile add-friend" />
       <div className="profile create-group-chat" />

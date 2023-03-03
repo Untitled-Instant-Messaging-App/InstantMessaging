@@ -4,5 +4,5 @@ export interface User {
   username: string;
   image: string;
   joinedAt: Date;
-  editedAt: Date;
+  editedAt?: Date;
 }

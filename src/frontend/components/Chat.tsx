@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import "../styles/Chat.css";
-import image from "../assets/unnamed.jpg";
 import Vibrant from "node-vibrant";
 import { Message } from "../../common/types";
 
@@ -9,9 +8,9 @@ export default function Chat({ chat }: { chat: string }) {
   const [palette, setPalette] = useState(null);
   const bottom = useRef(null);
 
-  useEffect(() => {
-    Vibrant.from(image).getPalette().then(setPalette).catch();
-  }, []);
+  // useEffect(() => {
+  //   Vibrant.from(image).getPalette().then(setPalette).catch();
+  // }, []);
 
   useEffect(() => {
     bottom.current?.scrollIntoView({ behavior: "smooth" });
@@ -40,7 +39,7 @@ export default function Chat({ chat }: { chat: string }) {
     <div className="chat-wrapper">
       <nav className="chat-header">
         <div className="chat-user">
-          <img className="chat-user-picture" src={image} />
+          <img className="chat-user-picture" />
           <div className="chat-user-name">@{chat}</div>
         </div>
       </nav>
