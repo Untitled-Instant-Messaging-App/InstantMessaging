@@ -14,7 +14,7 @@ export class Authentification extends EventEmitter {
     super.emit("onStartup", !this.store.get("challenge"));
   }
 
-  public async register(registration: Registration): Promise<boolean> {
+  public async register(registration: Registration): Promise<void> {
     if (!!this.store.get("challenge")) {
       throw Error("A user has already been registered to this device.");
     }
@@ -35,30 +35,37 @@ export class Authentification extends EventEmitter {
       joinedAt: new Date(),
     };
     this.login(credentials);
+
     super.emit("onRegister", this.isAuthenticated, credentials, registeredUser);
-    return this.isAuthenticated;
   }
 
-  public login(credentials: LoginCredentials): boolean {
+  public login(credentials: LoginCredentials) {
     if (!this.store.get("challenge")) {
       throw Error("No user registered to this device. Cannot validated user credentials.");
     }
     this.isAuthenticated = this.validateChallenge(credentials.password + credentials.username);
+
+    if (!this.isAuthenticated) {
+      throw Error("Username or password incorrect.");
+    }
+
     super.emit("onLogin", this.isAuthenticated, credentials);
-    return this.isAuthenticated;
   }
 
-  public logout(): boolean {
+  public logout() {
     if (!this.isAuthenticated) {
       throw Error("Cannot sign out unauthenticated user.");
     }
     this.isAuthenticated = false;
     super.emit("onLogout", this.isAuthenticated);
-    return this.isAuthenticated;
   }
 
   public hasRegistered(): boolean {
     return !!this.store.get("challenge");
+  }
+
+  public isAuthed(): boolean {
+    return this.isAuthenticated;
   }
 
   private generateChallenge(identity: string): void {

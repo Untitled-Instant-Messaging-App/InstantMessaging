@@ -9,24 +9,19 @@ export default function Login() {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const [isLogingin, setIsLogingin] = useState(false);
-  const [hasFailed, setHasFailed] = useState(false);
-  window.electron.authState(() => {
-    setHasFailed(true);
-    setIsLogingin(false);
-  });
+  const [isLoggingIn, setIsLoogingIn] = useState(false);
 
   function onClick(data: LoginCredentials) {
-    setIsLogingin(true);
     window.electron.login(data);
+    setIsLoogingIn(true);
   }
 
   return (
-    <div className="registration-wrapper" style={isLogingin ? { opacity: 0.5, pointerEvents: "none" } : null}>
+    <div className="registration-wrapper" style={isLoggingIn ? { opacity: 0.5, pointerEvents: "none" } : null}>
       <div>
         <h1>Login</h1>
         <span>Login with your username and password.</span>
-        {hasFailed && <p className="validation-error">Username or password incorrect.</p>}
+        {false && <p className="validation-error">Username or password incorrect.</p>}
       </div>
       <form className="registration-form" onSubmit={handleSubmit(onClick)}>
         {errors.username?.type === "required" && <p className="validation-error">Username is required</p>}
