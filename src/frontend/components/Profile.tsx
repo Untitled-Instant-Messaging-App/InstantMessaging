@@ -5,7 +5,7 @@ export default function Profile() {
   const [profile, setProfile] = useState<User>();
 
   useEffect(() => {
-    window.electron.fetchProfile().then(console.log);
+    window.electron.fetchProfile().then(setProfile);
   }, []);
 
   return (

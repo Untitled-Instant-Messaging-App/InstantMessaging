@@ -7,7 +7,9 @@ declare global {
       register: (registration: Registration) => Promise<void>;
       login: (credentials: LoginCredentials) => Promise<void>;
       logout: () => void;
-      authState: (callback: (event: IpcRendererEvent, state: boolean) => void) => void;
+      authState: (callback: (event: IpcRendererEvent, isAuthed: boolean) => void) => void;
+      registrationState: (callback: (event: IpcRendererEvent, isRegistered: boolean) => void) => void;
+      isAuthed: () => Promise<boolean>;
       isRegistered: () => Promise<boolean>;
       fetchProfile: () => Promise<User>;
     };

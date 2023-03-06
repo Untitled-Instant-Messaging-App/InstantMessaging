@@ -12,8 +12,8 @@ export default function Login() {
   const [isLoggingIn, setIsLoogingIn] = useState(false);
 
   function onClick(data: LoginCredentials) {
-    window.electron.login(data);
     setIsLoogingIn(true);
+    window.electron.login(data);
   }
 
   return (

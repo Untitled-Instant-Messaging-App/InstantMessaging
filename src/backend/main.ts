@@ -4,7 +4,7 @@ import { channels } from "../common/constants";
 import isDev from "electron-is-dev";
 import StateManagement from "./services/stateManagement";
 import ElectronStore from "electron-store";
-import { Registration, LoginCredentials } from "../common/types";
+import { Registration, LoginCredentials, User } from "../common/types";
 
 require("electron-squirrel-startup") && app.quit();
 
@@ -39,6 +39,7 @@ app.on("activate", () => {
 
 ipcMain.on(channels.REGISTER, async (event, registration: Registration) => {
   await authentication.register(registration);
+  event.sender.send(channels.IS_REGISTERED, authentication.hasRegistered());
   event.sender.send(channels.IS_AUTHED, authentication.isAuthed());
 });
 
@@ -47,12 +48,17 @@ ipcMain.on(channels.LOGIN, (event, credentials: LoginCredentials) => {
   event.sender.send(channels.IS_AUTHED, authentication.isAuthed());
 });
 
-ipcMain.on(channels.LOGOUT, () => {
+ipcMain.on(channels.LOGOUT, event => {
   authentication.logout();
+  event.sender.send(channels.IS_AUTHED, authentication.isAuthed());
 });
 
 ipcMain.handle(channels.IS_REGISTERED, () => {
   return authentication.hasRegistered();
+});
+
+ipcMain.handle(channels.IS_AUTHED, () => {
+  return authentication.isAuthed();
 });
 
 ipcMain.handle(channels.USER_PROFILE, () => {

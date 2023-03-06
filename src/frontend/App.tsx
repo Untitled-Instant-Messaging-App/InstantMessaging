@@ -9,17 +9,17 @@ import Rocket from "./assets/Rocket";
 import Phone from "./assets/Phone";
 
 export default function App() {
-  const [isAuthed, setIsAuthed] = useState(false);
-  const [isRegistered, setIsRegistered] = useState(false);
+  const [isAuthed, setIsAuthed] = useState<boolean>();
+  const [isRegistered, setIsRegistered] = useState<boolean>();
   const [selectedChat, setSelectedChat] = useState(null);
 
-  window.electron.authState((_, isAuthed) => setIsAuthed(isAuthed));
-
   useEffect(() => {
+    window.electron.isAuthed().then(setIsAuthed);
     window.electron.isRegistered().then(setIsRegistered);
   }, []);
 
-  console.log(isRegistered, isAuthed);
+  window.electron.authState((_, isAuthed) => setIsAuthed(isAuthed));
+  window.electron.registrationState((_, isRegistered) => setIsRegistered(isRegistered));
 
   if (!isRegistered) {
     return <Register />;

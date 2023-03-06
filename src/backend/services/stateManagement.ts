@@ -26,7 +26,7 @@ export default class StateManagement {
 
   public get<Type>(key: string, thrw?: boolean): Type {
     const obj = this.store.get(key);
-    if (thrw && obj == null) {
+    if (thrw && !obj) {
       throw Error(`Objcet with key \`${key}\ does not exist.`);
     }
     return obj ? (obj as Type) : null;
@@ -42,9 +42,9 @@ export default class StateManagement {
 
   public getSensitive<Type>(key: string, thrw?: boolean): Type {
     const encrypted = this.store.get(key);
-    if (thrw && !!encrypted) {
+    if (thrw && !encrypted) {
       throw Error(`Objcet with key \`${key}\ does not exist.`);
-    } else if (!!encrypted) {
+    } else if (!encrypted) {
       return null;
     }
     const decrypted = this.decrypt(encrypted, this.encryptionKey);
@@ -58,6 +58,6 @@ export default class StateManagement {
   }
 
   private decrypt(obj: any, encryptionKey: string) {
-    return CryptoJS.AES.decrypt(obj, encryptionKey).toString(CryptoJS.enc.Utf8);
+    return CryptoJS.AES.decrypt(obj, encryptionKey).toString();
   }
 }
