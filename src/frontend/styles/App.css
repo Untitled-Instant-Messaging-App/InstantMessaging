@@ -76,26 +76,6 @@ input:focus::-webkit-input-placeholder {
   animation: start-animation 0.2s ease-in-out forwards;
 }
 
-.hello-there {
-  user-select: none;
-  align-self: center;
-  height: fit-content;
-  display: flex;
-  justify-content: space-around;
-}
-
-.hello-there > * {
-  width: 200px;
-  text-align: center;
-  transform: scale(0.8);
-}
-
-.hello-there svg {
-  width: 100%;
-  height: 50%;
-  transform: scale(0.8);
-}
-
 @keyframes start-animation {
   0% {
     opacity: 0;

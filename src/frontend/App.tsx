@@ -1,10 +1,10 @@
 import "./styles/App.css";
+import { useEffect, useState } from "react";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Sidebar from "./components/Sidebar";
 import Chat from "./components/Chat";
-import { useEffect, useState } from "react";
-import Placeholder from "./components/Placeholder";
+import Welcome from "./components/Welcome";
 
 export default function App() {
   const [isAuthed, setIsAuthed] = useState<boolean>();
@@ -31,7 +31,7 @@ export default function App() {
     isAuthed && (
       <div className="app-wrapper">
         <Sidebar onClick={setSelectedChat} />
-        {selectedChat ? <Chat chat={selectedChat} /> : <Placeholder />}
+        {selectedChat ? <Chat chat={selectedChat} /> : <Welcome />}
       </div>
     )
   );
