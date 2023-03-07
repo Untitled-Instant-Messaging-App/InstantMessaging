@@ -10,5 +10,5 @@ export const channels = {
 
 export const data = {
   CHALLENGE: "challenge",
-  USER_PROFILE: "user-profile",
+  USER_PROFILE: "profile",
 };

@@ -1,8 +1,8 @@
 import { app, BrowserWindow, ipcMain } from "electron";
-import { channels } from "../common/constants";
-import isDev from "electron-is-dev";
+import { channels, data } from "../common/constants";
 import { Registration, LoginCredentials } from "../common/types";
 import { authentication, stateManagement } from "./dataManagement";
+import isDev from "electron-is-dev";
 
 require("electron-squirrel-startup") && app.quit();
 
@@ -56,5 +56,5 @@ ipcMain.handle(channels.IS_AUTHED, () => {
 });
 
 ipcMain.handle(channels.USER_PROFILE, () => {
-  return stateManagement.getSensitive("profile");
+  return stateManagement.getSensitive(data.USER_PROFILE);
 });

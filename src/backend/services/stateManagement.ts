@@ -47,17 +47,17 @@ export default class StateManagement {
     } else if (!encrypted) {
       return null;
     }
-    const decrypted = this.decrypt(encrypted, this.encryptionKey);
-    const obj = JSON.parse(decrypted);
+    const obj = this.decrypt(encrypted, this.encryptionKey);
     return obj ? (obj as Type) : null;
   }
 
-  private encrypt(obj: any, encryptionKey: string): string {
-    const json = JSON.stringify(obj);
+  private encrypt(decrypted: any, encryptionKey: string): string {
+    const json = JSON.stringify(decrypted);
     return CryptoJS.AES.encrypt(json, encryptionKey).toString();
   }
 
-  private decrypt(obj: any, encryptionKey: string) {
-    return CryptoJS.AES.decrypt(obj, encryptionKey).toString();
+  private decrypt(encrypted: any, encryptionKey: string) {
+    const decrypted = CryptoJS.AES.decrypt(encrypted, encryptionKey);
+    return JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
   }
 }
