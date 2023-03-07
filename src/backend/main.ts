@@ -1,10 +1,8 @@
 import { app, BrowserWindow, ipcMain } from "electron";
-import { Authentification } from "./services/authentication";
 import { channels } from "../common/constants";
 import isDev from "electron-is-dev";
-import StateManagement from "./services/stateManagement";
-import ElectronStore from "electron-store";
-import { Registration, LoginCredentials, User } from "../common/types";
+import { Registration, LoginCredentials } from "../common/types";
+import { authentication, stateManagement } from "./dataManagement";
 
 require("electron-squirrel-startup") && app.quit();
 
@@ -27,15 +25,11 @@ function createWindow() {
   }
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => createWindow());
 
-app.on("window-all-closed", () => {
-  process.platform !== "darwin" && app.quit();
-});
+app.on("window-all-closed", () => process.platform !== "darwin" && app.quit());
 
-app.on("activate", () => {
-  BrowserWindow.getAllWindows().length === 0 && createWindow();
-});
+app.on("activate", () => BrowserWindow.getAllWindows().length === 0 && createWindow());
 
 ipcMain.on(channels.REGISTER, async (event, registration: Registration) => {
   await authentication.register(registration);
@@ -63,25 +57,4 @@ ipcMain.handle(channels.IS_AUTHED, () => {
 
 ipcMain.handle(channels.USER_PROFILE, () => {
   return stateManagement.getSensitive("profile");
-});
-
-const store = new ElectronStore();
-const authentication = new Authentification(store);
-const stateManagement = new StateManagement(store);
-
-authentication.on("onRegister", (hasSucceeded, credentials, user) => {
-  if (hasSucceeded) {
-    stateManagement.setEncryptionKey(credentials.password);
-    stateManagement.setSensitive("profile", user);
-  }
-});
-
-authentication.on("onLogin", (hasSucceeded, credentials) => {
-  if (hasSucceeded) {
-    stateManagement.setEncryptionKey(credentials.password + credentials.username);
-  }
-});
-
-authentication.on("onLogout", () => {
-  stateManagement.invalidateEncryptionKey();
 });

@@ -5,4 +5,10 @@ export const channels = {
   IS_REGISTERED: "is-first-time-running",
   IS_AUTHED: "is-user-authenticated",
   USER_PROFILE: "get-user-profile",
+  ERROR: "on-error",
+};
+
+export const data = {
+  CHALLENGE: "challenge",
+  USER_PROFILE: "user-profile",
 };

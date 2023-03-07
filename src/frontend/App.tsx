@@ -18,8 +18,8 @@ export default function App() {
     window.electron.isRegistered().then(setIsRegistered);
   }, []);
 
-  window.electron.authState((_, isAuthed) => setIsAuthed(isAuthed));
-  window.electron.registrationState((_, isRegistered) => setIsRegistered(isRegistered));
+  window.electron.onAuthChange((_, isAuthed) => setIsAuthed(isAuthed));
+  window.electron.onRegistrationChange((_, isRegistered) => setIsRegistered(isRegistered));
 
   if (!isRegistered) {
     return <Register />;

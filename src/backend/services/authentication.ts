@@ -2,8 +2,9 @@ import bcrypt from "bcrypt";
 import ElectronStore from "electron-store";
 import { BasicUser, LoginCredentials, Registration, User } from "../../common/types";
 import EventEmitter from "events";
+import { data } from "../../common/constants";
 
-export class Authentification extends EventEmitter {
+export default class Authentification extends EventEmitter {
   private store: ElectronStore;
   private isAuthenticated: boolean;
 
@@ -11,11 +12,11 @@ export class Authentification extends EventEmitter {
     super();
     this.store = store;
     this.isAuthenticated = false;
-    super.emit("onStartup", !this.store.get("challenge"));
+    super.emit("onStartup", !this.store.get(data.CHALLENGE));
   }
 
   public async register(registration: Registration): Promise<void> {
-    if (!!this.store.get("challenge")) {
+    if (!!this.store.get(data.CHALLENGE)) {
       throw Error("A user has already been registered to this device.");
     }
     const credentials = { username: registration.username, password: registration.password };
@@ -36,7 +37,7 @@ export class Authentification extends EventEmitter {
     };
     this.login(credentials);
 
-    super.emit("onRegister", this.isAuthenticated, credentials, registeredUser);
+    super.emit("onRegister", credentials, registeredUser);
   }
 
   public login(credentials: LoginCredentials) {
@@ -49,7 +50,7 @@ export class Authentification extends EventEmitter {
       throw Error("Username or password incorrect.");
     }
 
-    super.emit("onLogin", this.isAuthenticated, credentials);
+    super.emit("onLogin", credentials);
   }
 
   public logout() {
@@ -57,7 +58,7 @@ export class Authentification extends EventEmitter {
       throw Error("Cannot sign out unauthenticated user.");
     }
     this.isAuthenticated = false;
-    super.emit("onLogout", this.isAuthenticated);
+    super.emit("onLogout");
   }
 
   public hasRegistered(): boolean {
