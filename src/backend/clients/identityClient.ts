@@ -10,7 +10,7 @@ export async function register(user: BasicUser): Promise<User> {
     return res.data;
   } catch (error) {
     if (error instanceof AxiosError) {
-      switch (error.response.status) {
+      switch (error?.response.status) {
         case 400:
           throw Error(`User with the same name already exists.`);
         case 401:

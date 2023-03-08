@@ -1,7 +1,7 @@
-import bcrypt from "bcrypt";
+import Bcrypt from "bcrypt";
 import ElectronStore from "electron-store";
-import { BasicUser, LoginCredentials, Registration, User } from "../../common/types";
 import EventEmitter from "events";
+import { BasicUser, LoginCredentials, Registration } from "../../common/types";
 import { data } from "../../common/constants";
 import { register } from "../clients/identityClient";
 
@@ -20,8 +20,14 @@ export default class Authentification extends EventEmitter {
     if (!!this.store.get(data.CHALLENGE)) {
       throw Error("A user has already been registered to this device.");
     }
-    const credentials = { username: registration.username, password: registration.password };
-    const basicUser: BasicUser = { displayName: registration.username, image: registration.image };
+    const credentials = {
+      username: registration.username,
+      password: registration.password,
+    };
+    const basicUser: BasicUser = {
+      displayName: registration.username,
+      image: registration.image,
+    };
     const registeredUser = await register(basicUser);
     this.generateChallenge(credentials.password + credentials.username);
     this.login(credentials);
@@ -35,7 +41,9 @@ export default class Authentification extends EventEmitter {
     if (this.isAuthenticated) {
       throw Error("A user is already authenticated. User must first logout.");
     }
-    const isValid = this.validateChallenge(credentials.password + credentials.username);
+    const isValid = this.validateChallenge(
+      credentials.password + credentials.username
+    );
     if (!isValid) {
       throw Error("Username or password incorrect.");
     }
@@ -60,8 +68,8 @@ export default class Authentification extends EventEmitter {
   }
 
   private generateChallenge(identity: string): void {
-    const salt = bcrypt.genSaltSync();
-    const hash = bcrypt.hashSync(identity, salt);
+    const salt = Bcrypt.genSaltSync();
+    const hash = Bcrypt.hashSync(identity, salt);
     this.store.set("salt", salt);
     this.store.set("challenge", hash);
   }
@@ -72,6 +80,6 @@ export default class Authentification extends EventEmitter {
     if (!challenge) {
       throw Error("No challenge present to validated.");
     }
-    return bcrypt.hashSync(identity, salt) === challenge;
+    return Bcrypt.hashSync(identity, salt) === challenge;
   }
 }

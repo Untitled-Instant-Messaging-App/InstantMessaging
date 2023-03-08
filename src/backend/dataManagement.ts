@@ -8,7 +8,7 @@ const authentication = new Authentification(store);
 const stateManagement = new StateManagement(store);
 
 authentication.on("onRegister", (credentials, user) => {
-  stateManagement.setEncryptionKey(credentials.password + credentials.username);
+  stateManagement.setEncryptionKey(credentials.password + credentials.username); // create proper cypher strat
   stateManagement.setSensitive(data.USER_PROFILE, user);
 });
 
