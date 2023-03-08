@@ -10,10 +10,6 @@
   gap: 2em;
 }
 
-.registration-wrapper span {
-  font-size: 80%;
-}
-
 .registration-wrapper h1 {
   margin-top: unset;
 }
@@ -44,10 +40,14 @@
   margin-top: 15px;
 }
 
+.registration-error,
 .validation-error {
   color: #e51b1b;
   font-weight: bold;
-  font-size: 70%;
+}
+
+.validation-error {
+  font-size: 80%;
   margin: 0;
   margin-bottom: 7px;
 }

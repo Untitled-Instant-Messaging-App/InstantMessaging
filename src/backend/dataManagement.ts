@@ -14,7 +14,6 @@ authentication.on("onRegister", (credentials, user) => {
 
 authentication.on("onLogin", credentials => {
   stateManagement.setEncryptionKey(credentials.password + credentials.username);
-  console.log(stateManagement.getSensitive(data.USER_PROFILE));
 });
 
 authentication.on("onLogout", () => {

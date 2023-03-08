@@ -15,7 +15,7 @@ function createWindow() {
     width: 800,
     backgroundColor: "black",
     webPreferences: {
-      preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY
+      preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
   });
   window.removeMenu();
@@ -32,13 +32,21 @@ app.on("window-all-closed", () => process.platform !== "darwin" && app.quit());
 app.on("activate", () => BrowserWindow.getAllWindows().length === 0 && createWindow());
 
 ipcMain.on(channels.REGISTER, async (event, registration: Registration) => {
-  await authentication.register(registration);
-  event.sender.send(channels.IS_REGISTERED, authentication.hasRegistered());
-  event.sender.send(channels.IS_AUTHED, authentication.isAuthed());
+  try {
+    await authentication.register(registration);
+    event.sender.send(channels.IS_REGISTERED, authentication.hasRegistered());
+    event.sender.send(channels.IS_AUTHED, authentication.isAuthed());
+  } catch (error) {
+    event.sender.send(channels.REGISTRATION_ERROR, error.message);
+  }
 });
 
 ipcMain.on(channels.LOGIN, (event, credentials: LoginCredentials) => {
-  authentication.login(credentials);
+  try {
+    authentication.login(credentials);
+  } catch (error) {
+    event.sender.send(channels.LOGIN_ERROR, error.message);
+  }
   event.sender.send(channels.IS_AUTHED, authentication.isAuthed());
 });
 

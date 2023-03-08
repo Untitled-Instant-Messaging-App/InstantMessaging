@@ -6,6 +6,8 @@ export const channels = {
   IS_AUTHED: "is-user-authenticated",
   USER_PROFILE: "get-user-profile",
   ERROR: "on-error",
+  LOGIN_ERROR: "on-login-error",
+  REGISTRATION_ERROR: "on-registration-error",
 };
 
 export const data = {

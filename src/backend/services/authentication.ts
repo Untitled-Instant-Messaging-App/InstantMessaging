@@ -30,18 +30,22 @@ export default class Authentification extends EventEmitter {
 
   public login(credentials: LoginCredentials) {
     if (!this.store.get("challenge")) {
-      throw Error("No user registered to this device. Cannot validated user credentials.");
+      throw Error("No challenge present. Cannot validated user credentials.");
     }
-    this.isAuthenticated = this.validateChallenge(credentials.password + credentials.username);
-    // if (!this.isAuthenticated) {
-    //   throw Error("Username or password incorrect.");
-    // }
+    if (this.isAuthenticated) {
+      throw Error("A user is already authenticated. User must first logout.");
+    }
+    const isValid = this.validateChallenge(credentials.password + credentials.username);
+    if (!isValid) {
+      throw Error("Username or password incorrect.");
+    }
+    this.isAuthenticated = true;
     super.emit("onLogin", credentials);
   }
 
   public logout() {
     if (!this.isAuthenticated) {
-      throw Error("Cannot sign out unauthenticated user.");
+      throw Error("No user authenticated. User must first login.");
     }
     this.isAuthenticated = false;
     super.emit("onLogout");

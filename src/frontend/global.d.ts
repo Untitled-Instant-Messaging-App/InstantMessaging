@@ -1,4 +1,4 @@
-import { LoginCredentials, Registration, User, Error } from "../common/types";
+import { LoginCredentials, Registration, User } from "../common/types";
 import { IpcRendererEvent } from "electron";
 
 declare global {
@@ -12,7 +12,9 @@ declare global {
       isAuthed: () => Promise<boolean>;
       isRegistered: () => Promise<boolean>;
       fetchProfile: () => Promise<User>;
-      onError: (callback: (event: IpcRendererEvent, error: Error) => void) => void;
+      onError: (callback: (event: IpcRendererEvent, error: string) => void) => void;
+      onLoginError: (callback: (event: IpcRendererEvent, error: string) => void) => void;
+      onRegistrationError: (callback: (event: IpcRendererEvent, error: string) => void) => void;
     };
   }
 }

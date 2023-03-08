@@ -2,10 +2,28 @@ import axios from "axios";
 import { BasicUser, User } from "../../common/types";
 import https from "https";
 import isDev from "electron-is-dev";
+import { AxiosError } from "axios";
 
 export async function register(user: BasicUser): Promise<User> {
-  const res = await axios.post("https://localhost:44354" + "/users/register", user, headers());
-  return res.data;
+  try {
+    const res = await axios.post("https://localhost:44354" + "/users/register", user, headers());
+    return res.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      switch (error.response.status) {
+        case 400:
+          throw Error(`User with the same name already exists.`);
+        case 401:
+          throw Error(`Client is not authorised to register new users.`); // handle
+        case 500:
+          throw Error("Could not register user as there was an internal server error.");
+        default:
+          throw Error("Could not register user.");
+      }
+    } else {
+      throw Error("Unknown error occured.");
+    }
+  }
 }
 
 export async function unregister(user: User): Promise<void> {

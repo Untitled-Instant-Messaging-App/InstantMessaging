@@ -11,6 +11,12 @@ export default function Register() {
     handleSubmit,
   } = useForm();
   const [isRegistering, setIsRegistering] = useState(false);
+  const [error, setError] = useState<string>();
+
+  window.electron.onRegistrationError((_, error) => {
+    setError(error);
+    setIsRegistering(false);
+  });
 
   async function onClick(data: Registration) {
     setIsRegistering(true);
@@ -26,6 +32,7 @@ export default function Register() {
       <div>
         <h1>Registration</h1>
         <span>Looks like this is the first time you are running this app. Register a user and begin chating!</span>
+        {error && <p className="registration-error">{error}</p>}
       </div>
       <form className="registration-form" onSubmit={handleSubmit(onClick)}>
         {errors.username?.type === "required" && <p className="validation-error">Username is required</p>}

@@ -9,10 +9,16 @@ export default function Login() {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const [isLoggingIn, setIsLoogingIn] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [error, setError] = useState<string>();
+
+  window.electron.onLoginError((_, error) => {
+    setError(error);
+    setIsLoggingIn(false);
+  });
 
   function onClick(data: LoginCredentials) {
-    setIsLoogingIn(true);
+    setIsLoggingIn(true);
     window.electron.login(data);
   }
 
@@ -21,7 +27,7 @@ export default function Login() {
       <div>
         <h1>Login</h1>
         <span>Login with your username and password.</span>
-        {false && <p className="validation-error">Username or password incorrect.</p>}
+        {error && <p className="registration-error">{error}</p>}
       </div>
       <form className="registration-form" onSubmit={handleSubmit(onClick)}>
         {errors.username?.type === "required" && <p className="validation-error">Username is required</p>}
