@@ -8,5 +8,5 @@ export default function Profile() {
     window.electron.fetchProfile().then(setProfile);
   }, []);
 
-  return <img className="profile" src={profile?.image} onClick={() => window.electron.logout()} />;
+  return <img className="profile" src={profile?.image} />;
 }

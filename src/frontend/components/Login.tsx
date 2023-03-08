@@ -27,7 +27,7 @@ export default function Login() {
         {errors.username?.type === "required" && <p className="validation-error">Username is required</p>}
         <input type="text" placeholder="Enter your username" {...register("username", { required: true })} defaultValue="greffgreff" />
         {errors.password?.type === "required" && <p className="validation-error">Password is required</p>}
-        <input type="text" placeholder="Enter your password" {...register("password", { required: true })} defaultValue="Gaojinglu80!" />
+        <input type="password" placeholder="Enter your password" {...register("password", { required: true })} defaultValue="Gaojinglu80!" />
         <input type="submit" value="Login" />
       </form>
       <div className="registration-note">Please note that a user is tied to a device. Your credentials will only be valid on this device.</div>
