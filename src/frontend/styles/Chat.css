@@ -70,7 +70,7 @@
   background-color: #303030;
   /* font-weight: bold; */
   padding: 10px 15px;
-  /* animation: chat-bubble-animation 0.2s ease-in-out forwards; */
+  animation: chat-bubble-animation 0.2s ease-in-out forwards;
   z-index: -9;
   overflow-wrap: break-word;
   user-select: text !important;

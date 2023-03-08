@@ -3,6 +3,7 @@ import ElectronStore from "electron-store";
 import { BasicUser, LoginCredentials, Registration, User } from "../../common/types";
 import EventEmitter from "events";
 import { data } from "../../common/constants";
+import { register } from "../clients/identityClient";
 
 export default class Authentification extends EventEmitter {
   private store: ElectronStore;
@@ -20,23 +21,10 @@ export default class Authentification extends EventEmitter {
       throw Error("A user has already been registered to this device.");
     }
     const credentials = { username: registration.username, password: registration.password };
+    const basicUser: BasicUser = { displayName: registration.username, image: registration.image };
+    const registeredUser = await register(basicUser);
     this.generateChallenge(credentials.password + credentials.username);
-
-    // const basicUser: BasicUser = {
-    //   displayName: registration.username,
-    //   image: registration.image,
-    // };
-    // const registeredUser = await register(basicUser);
-
-    const registeredUser: User = {
-      id: "abc",
-      username: registration.username + "#0001",
-      displayName: registration.username,
-      image: registration?.image,
-      joinedAt: new Date(),
-    };
     this.login(credentials);
-
     super.emit("onRegister", credentials, registeredUser);
   }
 
@@ -45,11 +33,9 @@ export default class Authentification extends EventEmitter {
       throw Error("No user registered to this device. Cannot validated user credentials.");
     }
     this.isAuthenticated = this.validateChallenge(credentials.password + credentials.username);
-
-    if (!this.isAuthenticated) {
-      throw Error("Username or password incorrect.");
-    }
-
+    // if (!this.isAuthenticated) {
+    //   throw Error("Username or password incorrect.");
+    // }
     super.emit("onLogin", credentials);
   }
 
